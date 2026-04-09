@@ -5,8 +5,9 @@ import pandas as pd
 from tweet_cleaner import clean_tweet_column
 
 
-RAW_DATA_PATH = Path("data/raw/labeled_data.csv")
-PROCESSED_DATA_PATH = Path("data/processed/cleaned_labeled_data.csv")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+RAW_DATA_PATH = PROJECT_ROOT / "data" / "raw" / "labeled_data.csv"
+PROCESSED_DATA_PATH = PROJECT_ROOT / "data" / "processed" / "cleaned_labeled_data.csv"
 
 
 def main() -> None:
