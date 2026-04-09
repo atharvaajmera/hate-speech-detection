@@ -1,12 +1,13 @@
 # Hate Speech Detection
 
-Basic starter setup for a hate speech detection project using tweet data.
+Hate speech classification project using cleaned tweet text, TF-IDF features, and optimized classical models.
 
 ## Current scope
 
-- Load the raw labeled tweet dataset
-- Clean tweet text
-- Save a processed dataset for later model training
+- Data preprocessing (`tweet` -> `clean_tweet`)
+- TF-IDF feature generation
+- Model notebooks for EDA, Logistic Regression, optimized SVM, and optimized MLP
+- CLI prediction script that compares multiple trained models on input text
 
 ## Project structure
 
@@ -16,9 +17,24 @@ hate-speech-detection/
 |   |-- raw/
 |   |   `-- labeled_data.csv
 |   `-- processed/
-|-- preprocess_data.py
+|       |-- cleaned_labeled_data.csv
+|       `-- tfidf/
+|-- models/
+|-- notebooks/
+|   |-- cnn_embeddings.ipynb
+|   |-- eda.ipynb
+|   |-- logreg_tfidf.ipynb
+|   |-- mlp_tfidf_optimized.ipynb
+|   `-- svm_optimized.ipynb
+|-- reports/
+|   `-- model_metrics_summary.txt
+|-- scripts/
+|   |-- predict.py
+|   |-- preprocess_data.py
+|   |-- tweet_cleaner.py
+|   `-- vectorize_tfidf.py
 |-- requirements.txt
-`-- tweet_cleaner.py
+`-- README.md
 ```
 
 ## Setup
@@ -34,7 +50,7 @@ pip install -r requirements.txt
 ## Run preprocessing
 
 ```powershell
-python preprocess_data.py
+python scripts/preprocess_data.py
 ```
 
 This will create:
@@ -43,10 +59,42 @@ This will create:
 data/processed/cleaned_labeled_data.csv
 ```
 
-## Next steps
+## Build TF-IDF features
 
-- Add train/test split
-- Train a baseline text classification model
-- Evaluate model performance
-- Build a small app or API for predictions
+```powershell
+python scripts/vectorize_tfidf.py
+```
 
+This will create:
+
+```text
+data/processed/tfidf/X_tfidf.npz
+data/processed/tfidf/tfidf_vectorizer.pkl
+data/processed/tfidf/y_labels.csv
+```
+
+## Run CLI prediction (multi-model)
+
+```powershell
+python scripts/predict.py
+```
+
+One-shot mode:
+
+```powershell
+python scripts/predict.py "your text here"
+```
+
+Force retraining cached models:
+
+```powershell
+python scripts/predict.py --retrain
+```
+
+## Notebooks
+
+- `notebooks/eda.ipynb`: detailed exploratory data analysis
+- `notebooks/logreg_tfidf.ipynb`: logistic regression baseline on TF-IDF
+- `notebooks/svm_optimized.ipynb`: optimized LinearSVC workflow
+- `notebooks/mlp_tfidf_optimized.ipynb`: optimized MLP on TF-IDF+SVD
+- `notebooks/cnn_embeddings.ipynb`: embedding-based 1D-CNN experiment
