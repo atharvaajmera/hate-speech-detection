@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import pickle
-from io import StringIO
 from pathlib import Path
 
 import joblib
@@ -21,7 +20,6 @@ from tweet_cleaner import clean_tweet
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 VECTORIZER_PATH = PROJECT_ROOT / "data" / "processed" / "tfidf" / "tfidf_vectorizer.pkl"
 TRAIN_DATA_PATH = PROJECT_ROOT / "data" / "processed" / "cleaned_labeled_data.csv"
-REPORT_PATH = PROJECT_ROOT / "reports" / "model_metrics_summary.txt"
 MODEL_DIR = PROJECT_ROOT / "models"
 
 LABEL_MAP = {
@@ -86,7 +84,7 @@ def softmax(x: np.ndarray) -> np.ndarray:
 def load_vectorizer():
     if not VECTORIZER_PATH.exists():
         raise FileNotFoundError(
-            f"Missing vectorizer at {VECTORIZER_PATH}. Run: python scripts/vectorize_tfidf.py"
+            f"Missing vectorizer at {VECTORIZER_PATH}. Run: .\\.venv\\Scripts\\python.exe scripts/vectorize_tfidf.py"
         )
     with VECTORIZER_PATH.open("rb") as f:
         return pickle.load(f)
@@ -95,7 +93,7 @@ def load_vectorizer():
 def load_training_data(vectorizer):
     if not TRAIN_DATA_PATH.exists():
         raise FileNotFoundError(
-            f"Missing cleaned data at {TRAIN_DATA_PATH}. Run: python scripts/preprocess_data.py"
+            f"Missing cleaned data at {TRAIN_DATA_PATH}. Run: .\\.venv\\Scripts\\python.exe scripts/preprocess_data.py"
         )
 
     df = pd.read_csv(TRAIN_DATA_PATH)
@@ -129,36 +127,6 @@ def load_or_train_models(vectorizer, retrain: bool):
         loaded[key] = model
 
     return loaded
-
-
-def parse_report_scores() -> pd.DataFrame | None:
-    if not REPORT_PATH.exists():
-        return None
-
-    lines = REPORT_PATH.read_text(encoding="utf-8").splitlines()
-    start = None
-    for i, line in enumerate(lines):
-        if line.strip().startswith("Overall comparison"):
-            start = i + 1
-            break
-    if start is None:
-        return None
-
-    table_lines = []
-    for line in lines[start:]:
-        if not line.strip():
-            break
-        table_lines.append(line)
-    if not table_lines:
-        return None
-
-    try:
-        df = pd.read_fwf(StringIO("\n".join(table_lines)))
-        if "model" not in df.columns:
-            return None
-        return df
-    except Exception:
-        return None
 
 
 def get_prediction_probs(model, x_vec: np.ndarray):
@@ -198,7 +166,6 @@ def print_prediction_block(
     input_text: str,
     cleaned: str,
     outputs: dict,
-    score_df: pd.DataFrame | None,
 ) -> None:
     print("\n=== Input ===")
     print(f"Raw: {input_text}")
@@ -217,28 +184,7 @@ def print_prediction_block(
                 f"1(offensive)={probs[1]:.4f}, "
                 f"2(neither)={probs[2]:.4f}"
             )
-
-        if score_df is not None:
-            # Try exact match first; then fallback aliases for older report names.
-            row = score_df[score_df["model"] == display_name]
-            if row.empty:
-                aliases = {
-                    "LogisticRegression (tfidf)": ["LogisticRegression"],
-                    "LinearSVC (optimized)": ["LinearSVC (tuned)"],
-                    "MLP (tfidf_optimized)": ["MLP (best from notebook)"],
-                }
-                for alias in aliases.get(display_name, []):
-                    row = score_df[score_df["model"] == alias]
-                    if not row.empty:
-                        break
-            if not row.empty:
-                r = row.iloc[0]
-                print(
-                    "Eval metrics: "
-                    f"accuracy={r.get('accuracy', np.nan):.4f}, "
-                    f"f1_macro={r.get('f1_macro', np.nan):.4f}, "
-                    f"class0_f1={r.get('class0_f1', np.nan):.4f}"
-                )
+        print(f"Model cache: {MODEL_SPECS[key]['cache_path']}")
 
 
 def main() -> None:
@@ -259,13 +205,11 @@ def main() -> None:
 
     vectorizer = load_vectorizer()
     models = load_or_train_models(vectorizer, retrain=args.retrain)
-    score_df = parse_report_scores()
-
     raw_text = " ".join(args.text).strip()
 
     def run_once(text: str) -> None:
         cleaned, outputs = predict_all(models, vectorizer, text)
-        print_prediction_block(text, cleaned, outputs, score_df)
+        print_prediction_block(text, cleaned, outputs)
 
     if raw_text:
         run_once(raw_text)

@@ -1,5 +1,4 @@
 import re
-import string
 
 URL_RE = re.compile(r"https?://\S+|www\.\S+", flags=re.IGNORECASE)
 MENTION_RE = re.compile(r"@\w+")

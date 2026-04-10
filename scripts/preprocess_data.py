@@ -12,6 +12,7 @@ PROCESSED_DATA_PATH = PROJECT_ROOT / "data" / "processed" / "cleaned_labeled_dat
 
 def main() -> None:
     df = pd.read_csv(RAW_DATA_PATH)
+    df = df.loc[:, ~df.columns.astype(str).str.startswith("Unnamed:")]
     cleaned_df = clean_tweet_column(df)
 
     PROCESSED_DATA_PATH.parent.mkdir(parents=True, exist_ok=True)
