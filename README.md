@@ -12,8 +12,8 @@ hate-speech-detection/
 |   `-- raw/
 |       `-- labeled_data.csv
 |-- models/
-|   |-- tfidf_vectorizer.joblib
-|   `-- hate_speech_svc.joblib
+|   |-- tfidf_vectorizer.pkl
+|   `-- hate_speech_svc.pkl
 |-- src/
 |   |-- __init__.py
 |   `-- preprocess.py
@@ -49,8 +49,8 @@ Run the notebook `Hate_Speech_Analysis.ipynb`, or use:
 This will save:
 
 ```text
-models/tfidf_vectorizer.joblib
-models/hate_speech_svc.joblib
+models/tfidf_vectorizer.pkl
+models/hate_speech_svc.pkl
 ```
 
 ## CLI usage

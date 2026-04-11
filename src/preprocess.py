@@ -1,9 +1,9 @@
 from __future__ import annotations
 
+import pickle
 import re
 from pathlib import Path
 
-import joblib
 import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -15,8 +15,8 @@ DATA_DIR = PROJECT_ROOT / "data"
 RAW_DATA_PATH = DATA_DIR / "raw_dataset.csv"
 LEGACY_RAW_DATA_PATH = DATA_DIR / "raw" / "labeled_data.csv"
 MODELS_DIR = PROJECT_ROOT / "models"
-VECTORIZER_PATH = MODELS_DIR / "tfidf_vectorizer.joblib"
-MODEL_PATH = MODELS_DIR / "hate_speech_svc.joblib"
+VECTORIZER_PATH = MODELS_DIR / "tfidf_vectorizer.pkl"
+MODEL_PATH = MODELS_DIR / "hate_speech_svc.pkl"
 
 LABEL_MAP = {
     0: "hate_speech",
@@ -100,16 +100,20 @@ def train_and_save_artifacts() -> tuple[TfidfVectorizer, LinearSVC]:
     model.fit(x, y)
 
     MODELS_DIR.mkdir(parents=True, exist_ok=True)
-    joblib.dump(vectorizer, VECTORIZER_PATH)
-    joblib.dump(model, MODEL_PATH)
+    with VECTORIZER_PATH.open("wb") as vectorizer_file:
+        pickle.dump(vectorizer, vectorizer_file)
+    with MODEL_PATH.open("wb") as model_file:
+        pickle.dump(model, model_file)
     return vectorizer, model
 
 
 def load_artifacts() -> tuple[TfidfVectorizer, LinearSVC]:
     if not VECTORIZER_PATH.exists() or not MODEL_PATH.exists():
         return train_and_save_artifacts()
-    vectorizer = joblib.load(VECTORIZER_PATH)
-    model = joblib.load(MODEL_PATH)
+    with VECTORIZER_PATH.open("rb") as vectorizer_file:
+        vectorizer = pickle.load(vectorizer_file)
+    with MODEL_PATH.open("rb") as model_file:
+        model = pickle.load(model_file)
     return vectorizer, model
 
 
