@@ -1,6 +1,6 @@
 # Hate Speech Project
 
-Final submission layout for hate-speech detection using tweet preprocessing, TF-IDF features, and an optimized `LinearSVC` classifier.
+Final submission layout for hate-speech detection using tweet preprocessing, TF-IDF features, and a tuned `LinearSVC` classifier.
 
 ## Final structure
 
@@ -14,6 +14,12 @@ hate-speech-detection/
 |-- models/
 |   |-- tfidf_vectorizer.pkl
 |   `-- hate_speech_svc.pkl
+|-- notebooks/
+|   `-- experiments/
+|       |-- 01_logreg_tfidf.ipynb
+|       |-- 02_svm_optimized.ipynb
+|       |-- 03_mlp_tfidf_optimized.ipynb
+|       `-- 04_cnn_embeddings.ipynb
 |-- src/
 |   |-- __init__.py
 |   `-- preprocess.py
@@ -22,13 +28,13 @@ hate-speech-detection/
 `-- requirements.txt
 ```
 
-## What each file does
+## What each part does
 
-- `Hate_Speech_Analysis.ipynb`: EDA + model training notebook for submission.
-- `src/preprocess.py`: shared preprocessing, training, and artifact-loading utilities.
-- `predict.py`: CLI prediction script.
-- `app.py`: Streamlit UI for interactive predictions.
-- `models/`: saved TF-IDF vectorizer and trained LinearSVC model.
+- `Hate_Speech_Analysis.ipynb`: TA-facing notebook with clean EDA, preprocessing, final model training, and conclusion.
+- `notebooks/experiments/`: archived experiments showing the sequence of model attempts.
+- `src/preprocess.py`: shared preprocessing, training, and model-loading utilities.
+- `predict.py`: CLI prediction entrypoint.
+- `app.py`: Streamlit interface for interactive predictions.
 
 ## Setup
 
@@ -38,15 +44,15 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-## Train and save model artifacts
+## Generate final model artifacts
 
-Run the notebook `Hate_Speech_Analysis.ipynb`, or use:
+Run the root notebook `Hate_Speech_Analysis.ipynb`, or use:
 
 ```powershell
 .\.venv\Scripts\python.exe predict.py --retrain
 ```
 
-This will save:
+This creates:
 
 ```text
 models/tfidf_vectorizer.pkl
