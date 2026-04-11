@@ -1,50 +1,36 @@
-# Hate Speech Detection
+# Hate Speech Project
 
-Hate speech classification project using cleaned tweet text, TF-IDF features, optimized classical models, and an embedding-based CNN experiment.
+Final submission layout for hate-speech detection using tweet preprocessing, TF-IDF features, and an optimized `LinearSVC` classifier.
 
-## Current scope
-
-- Data preprocessing (`tweet` -> `clean_tweet`)
-- TF-IDF feature generation
-- Model notebooks for EDA, Logistic Regression, optimized SVM, and optimized MLP
-- CLI prediction script that compares multiple trained models on input text
-
-## Project structure
+## Final structure
 
 ```text
 hate-speech-detection/
+|-- Hate_Speech_Analysis.ipynb
 |-- data/
-|   |-- raw/
-|   |   `-- labeled_data.csv
-|   `-- processed/
-|       |-- cleaned_labeled_data.csv
-|       `-- tfidf/
+|   |-- raw_dataset.csv
+|   `-- raw/
+|       `-- labeled_data.csv
 |-- models/
-|-- notebooks/
-|   |-- cnn_embeddings.ipynb
-|   |-- detailed_eda_hate_speech.ipynb
-|   |-- eda.ipynb
-|   |-- logreg_tfidf.ipynb
-|   |-- mlp_tfidf_optimized.ipynb
-|   `-- svm_optimized.ipynb
-|-- scripts/
-|   |-- predict.py
-|   |-- preprocess_data.py
-|   |-- tweet_cleaner.py
-|   `-- vectorize_tfidf.py
-|-- requirements.txt
-`-- README.md
+|   |-- tfidf_vectorizer.joblib
+|   `-- hate_speech_svc.joblib
+|-- src/
+|   |-- __init__.py
+|   `-- preprocess.py
+|-- predict.py
+|-- app.py
+`-- requirements.txt
 ```
+
+## What each file does
+
+- `Hate_Speech_Analysis.ipynb`: EDA + model training notebook for submission.
+- `src/preprocess.py`: shared preprocessing, training, and artifact-loading utilities.
+- `predict.py`: CLI prediction script.
+- `app.py`: Streamlit UI for interactive predictions.
+- `models/`: saved TF-IDF vectorizer and trained LinearSVC model.
 
 ## Setup
-
-Create and activate a virtual environment, then install dependencies:
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-```
-
-If you need to create the environment first:
 
 ```powershell
 python -m venv .venv
@@ -52,60 +38,37 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-## Run preprocessing
+## Train and save model artifacts
+
+Run the notebook `Hate_Speech_Analysis.ipynb`, or use:
 
 ```powershell
-.\.venv\Scripts\python.exe scripts/preprocess_data.py
+.\.venv\Scripts\python.exe predict.py --retrain
 ```
 
-This will create:
+This will save:
 
 ```text
-data/processed/cleaned_labeled_data.csv
+models/tfidf_vectorizer.joblib
+models/hate_speech_svc.joblib
 ```
 
-## Build TF-IDF features
+## CLI usage
+
+Interactive mode:
 
 ```powershell
-.\.venv\Scripts\python.exe scripts/vectorize_tfidf.py
-```
-
-This will create:
-
-```text
-data/processed/tfidf/X_tfidf.npz
-data/processed/tfidf/tfidf_vectorizer.pkl
-data/processed/tfidf/y_labels.csv
-```
-
-## Run CLI prediction (multi-model)
-
-```powershell
-.\.venv\Scripts\python.exe scripts/predict.py
+.\.venv\Scripts\python.exe predict.py
 ```
 
 One-shot mode:
 
 ```powershell
-.\.venv\Scripts\python.exe scripts/predict.py "your text here"
+.\.venv\Scripts\python.exe predict.py "your text here"
 ```
 
-Force retraining cached models:
+## Streamlit app
 
 ```powershell
-.\.venv\Scripts\python.exe scripts/predict.py --retrain
+streamlit run app.py
 ```
-
-## Notebooks
-
-- `notebooks/eda.ipynb`: main exploratory data analysis notebook
-- `notebooks/detailed_eda_hate_speech.ipynb`: extended EDA variant with extra analysis cells
-- `notebooks/logreg_tfidf.ipynb`: logistic regression baseline on TF-IDF
-- `notebooks/svm_optimized.ipynb`: optimized LinearSVC workflow
-- `notebooks/mlp_tfidf_optimized.ipynb`: optimized MLP on TF-IDF+SVD
-- `notebooks/cnn_embeddings.ipynb`: embedding-based 1D-CNN experiment using tokenized text and GloVe embeddings
-
-## Notes
-
-- `data/processed/` and `models/` are generated locally and ignored by Git.
-- The CLI prints live model predictions from the cached artifacts in `models/`; it does not reuse notebook test-set metrics.
