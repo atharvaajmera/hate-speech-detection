@@ -24,7 +24,6 @@ Thumbs.db
 
 # Generated data/model artifacts
 data/processed/
-models/
 
 # Optional logs
 *.log
