@@ -70,7 +70,7 @@ hate-speech-detection/
 
 The single source of truth for dependencies is [`requirements.txt`](c:\Users\Atharva\OneDrive\Desktop\WebD\hate-speech-detection\requirements.txt).
 
-The current environment uses (core app + final notebook + archived experiment notebooks):
+The current environment uses (core app + final notebook):
 
 - `numpy`
 - `pandas`
@@ -79,14 +79,12 @@ The current environment uses (core app + final notebook + archived experiment no
 - `scipy`
 - `scikit-learn`
 - `imbalanced-learn`
-- `gensim`
-- `tensorflow`
 - `ipykernel`
 - `streamlit`
 
 If the dependency list changes later, follow `requirements.txt` rather than this README summary.
 
-Note: `tensorflow` and `gensim` are required by the archived CNN experiment notebook (`notebooks/experiments/04_cnn_embeddings.ipynb`).
+Note: `tensorflow` and `gensim` are notebook-specific dependencies for the archived CNN experiment notebook (`notebooks/experiments/04_cnn_embeddings.ipynb`) and are installed inside that notebook.
 
 ## Setup
 
