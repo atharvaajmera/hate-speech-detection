@@ -21,7 +21,7 @@ The work in this repo follows a practical machine-learning workflow:
 4. evaluate with special attention to the minority `hate_speech` class
 5. save the trained vectorizer and classifier as reusable `.pkl` artifacts
 
-The final notebook, [`Hate_Speech_Analysis.ipynb`](c:\Users\Atharva\OneDrive\Desktop\WebD\hate-speech-detection\Hate_Speech_Analysis.ipynb), is the main submission path. Older experiments are preserved separately under `notebooks/experiments/`.
+The final notebook, [`Hate_Speech_Analysis.ipynb`](Hate_Speech_Analysis.ipynb), is the main submission path. Older experiments are preserved separately under `notebooks/experiments/`.
 
 ## Current folder structure
 
@@ -59,16 +59,16 @@ hate-speech-detection/
 
 ## What each part does
 
-- [`Hate_Speech_Analysis.ipynb`](c:\Users\Atharva\OneDrive\Desktop\WebD\hate-speech-detection\Hate_Speech_Analysis.ipynb): final EDA + preprocessing + training + conclusion notebook
-- [`src/preprocess.py`](c:\Users\Atharva\OneDrive\Desktop\WebD\hate-speech-detection\src\preprocess.py): shared cleaning, dataset loading, training, artifact saving, and prediction helpers
-- [`src/export_model.py`](c:\Users\Atharva\OneDrive\Desktop\WebD\hate-speech-detection\src\export_model.py): exports the final vectorizer and classifier into `models/`
-- [`predict.py`](c:\Users\Atharva\OneDrive\Desktop\WebD\hate-speech-detection\predict.py): CLI entrypoint for inference
-- [`app.py`](c:\Users\Atharva\OneDrive\Desktop\WebD\hate-speech-detection\app.py): Streamlit app for interactive inference
-- [`notebooks/experiments`](c:\Users\Atharva\OneDrive\Desktop\WebD\hate-speech-detection\notebooks\experiments): archived model-development attempts
+- [`Hate_Speech_Analysis.ipynb`](Hate_Speech_Analysis.ipynb): final EDA + preprocessing + training + conclusion notebook
+- [`src/preprocess.py`](src/preprocess.py): shared cleaning, dataset loading, training, artifact saving, and prediction helpers
+- [`src/export_model.py`](src/export_model.py): exports the final vectorizer and classifier into `models/`
+- [`predict.py`](predict.py): CLI entrypoint for inference
+- [`app.py`](app.py): Streamlit app for interactive inference
+- [`notebooks/experiments`](notebooks/experiments): archived model-development attempts
 
 ## Requirements
 
-The single source of truth for dependencies is [`requirements.txt`](c:\Users\Atharva\OneDrive\Desktop\WebD\hate-speech-detection\requirements.txt).
+The single source of truth for dependencies is [`requirements.txt`](requirements.txt).
 
 The current environment uses (core app + final notebook):
 
@@ -106,7 +106,7 @@ If PowerShell blocks activation, you can run commands directly with the environm
 
 ### 1. Open the final notebook
 
-Use [`Hate_Speech_Analysis.ipynb`](c:\Users\Atharva\OneDrive\Desktop\WebD\hate-speech-detection\Hate_Speech_Analysis.ipynb) for the full project walkthrough:
+Use [`Hate_Speech_Analysis.ipynb`](Hate_Speech_Analysis.ipynb) for the full project walkthrough:
 
 - clean EDA
 - preprocessing pipeline
