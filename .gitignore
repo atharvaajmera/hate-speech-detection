@@ -1,5 +1,8 @@
 # Virtual environments
 .venv/
+.venv_backtest/
+.venv_fresh/
+.venv*/
 venv/
 env/
 
